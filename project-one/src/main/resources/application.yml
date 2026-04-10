@@ -1,0 +1,14 @@
+# Spring where to get the data from
+spring:
+    datasource:
+        url: jdbc:postgresql://localhost:5432/transactionsdb
+        username: postgres
+        password: Aiden143
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        hibernate:
+            ddl-auto: update
+
+    output:
+        ansi:
+            enabled: always
