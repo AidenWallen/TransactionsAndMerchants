@@ -63,6 +63,8 @@ const createMerchant = async ()=>{
         throw new Error("Failed to create merchant");
 
     const createdMerchant = await response.json();
+    createMerchant.transactionCount = 0;
+    createMerchant.transactionVolume = 0;
 
     addMerchantToTable(createdMerchant);
 }
@@ -565,7 +567,7 @@ const activateTMDetailsModal = ()=>{
 const linkTransactionMerchant = async () => {
     const merchantId = document.getElementById("link-merchant-id").value;
     const transactionId = document.getElementById("link-transaction-id").value;
-    const role = document.getElementById("link-role").value;
+    const role = document.getElementById("link-to-role").value;
     const date = document.getElementById("link-date").value;
     const notes = document.getElementById("link-notes").value;
 
@@ -592,16 +594,21 @@ const linkTransactionMerchant = async () => {
 
     if (!response.ok) 
         alert("Failed to link. Relationship already exists.")
+    else
+        alert("successful link!")
+
+    loadMerchants();
 };
 
 const editTransactionMerchant = async () => {
     const merchantId = document.getElementById("link-merchant-id").value;
     const transactionId = document.getElementById("link-transaction-id").value;
-    const role = document.getElementById("link-role").value;
+    const fromRole = document.getElementById("link-from-role").value;
+    const toRole = document.getElementById("link-to-role").value;
     const date = document.getElementById("link-date").value;
     const notes = document.getElementById("link-notes").value;
 
-    if (!merchantId || !transactionId || !role){
+    if (!merchantId || !transactionId || !toRole || !fromRole){
         alert("Merchant ID, Transacton ID, and Role fields must be filled out.")
         return;
     }
@@ -609,11 +616,13 @@ const editTransactionMerchant = async () => {
     const body = {
         merchantId,
         transactionId,
-        role,
+        fromRole,
+        toRole,
         date,
         notes
     };
 
+    console.log("EDIT URL:", URL + `transaction-merchants`);
     const response = await fetch(URL+`transaction-merchants`, {
         method: "PUT",
         headers: {
@@ -624,12 +633,16 @@ const editTransactionMerchant = async () => {
 
     if (!response.ok) 
         throw new Error("Failed to update");
+    else
+        alert("successful edit!")
+
+    loadMerchants();
 };
 
 const deleteTransactionMerchant = async () => {
     const merchantId = document.getElementById("link-merchant-id").value;
     const transactionId = document.getElementById("link-transaction-id").value;
-    const role = document.getElementById("link-role").value;
+    const role = document.getElementById("link-to-role").value;
 
     if (!merchantId || !transactionId || !role){
         alert("Merchant ID, Transacton ID, and Role fields must be filled out.")
@@ -652,4 +665,8 @@ const deleteTransactionMerchant = async () => {
 
     if (!response.ok) 
         throw new Error("Failed to delete");
+    else
+        alert("successful delete!")
+
+    loadMerchants();
 };

@@ -49,7 +49,7 @@ public class TransactionMerchantController {
         TransactionMerchantDTO dto = new TransactionMerchantDTO(tm);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
- 
+
     @DeleteMapping("/transaction-merchants")
     public ResponseEntity<Void> remove(@Valid @RequestBody TransactionMerchantDeleteDTO dto){
         service.remove(dto.merchantId(),dto.transactionId(),dto.role());
